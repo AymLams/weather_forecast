@@ -14,5 +14,5 @@ def current_weather():
     # else:
     return "Too many connection for today", 401
 
-    # PENSER A CHECKER SI L API RETOURNE DES CHOSES
-    # API METEO A TROUVER SUR https://www.weatherbit.io/api
+    # PENSER A CHECKER SI L api RETOURNE DES CHOSES
+    # api METEO A TROUVER SUR https://www.weatherbit.io/api

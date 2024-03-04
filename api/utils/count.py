@@ -18,7 +18,7 @@ def get_count_per_day():
 
 def check_count_per_day():
     """
-    Function to check if we already have too many connections for today on our API
+    Function to check if we already have too many connections for today on our api
     """
 
     # We get back the count of connection for today
