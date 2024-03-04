@@ -4,13 +4,13 @@ from flask import current_app
 
 def fetchall_db(request: str, req_type: str):
     """
-    Function to launch a query to our database
+    Function to launch a query to our sql
     :param request:
     :return:
     """
     try:
         con = psycopg2.connect(
-            database=current_app.config["database"],
+            database=current_app.config["sql"],
             user=current_app.config["user"],
             password=current_app.config["password"],
             port=current_app.config["port"]

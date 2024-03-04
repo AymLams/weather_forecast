@@ -9,7 +9,7 @@ def get_count_per_day():
     """
     # We create the query
     sql_request = f"SELECT count FROM {TABLE_COUNT} WHERE date is CURRENT_DATE"
-    # We launch the connection to our database
+    # We launch the connection to our sql
     count = fetchall_db(sql_request, req_type="SELECT")
 
     # We return the count
@@ -26,7 +26,7 @@ def check_count_per_day():
 
     # If no connection
     if not count:
-        # We create the row in database and we return True
+        # We create the row in sql and we return True
         create_count()
         return True
 
