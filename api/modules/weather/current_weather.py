@@ -1,7 +1,3 @@
-#from utils.count import check_count_per_day
-
-
-
 
 def current_weather():
     """
