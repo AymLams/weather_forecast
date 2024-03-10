@@ -1,22 +1,25 @@
-from database import fetchall_db
+from .database import fetchall_db
+from flask import current_app, jsonify
 
-
-TABLE_COUNT = "count_per_day"
 
 def get_count_per_day():
     """
     Function to get the current count of connection for today
     """
     # We create the query
-    sql_request = f"SELECT count FROM {TABLE_COUNT} WHERE date is CURRENT_DATE"
+    sql_request = f"SELECT count FROM {current_app.config['COUNT']['table_name']} WHERE date = CURRENT_DATE"
     # We launch the connection to our sql
-    count = fetchall_db(sql_request, req_type="SELECT")
+    count, success = fetchall_db(sql_request)
+    if success:
+        if count:
+            return count[0][0]
+        else:
+            return 0
+    else:
+        return success
 
-    # We return the count
-    return count
 
-
-def check_count_per_day():
+def check_count_per_day() -> int:
     """
     Function to check if we already have too many connections for today on our api
     """
@@ -25,21 +28,24 @@ def check_count_per_day():
     count = get_count_per_day()
 
     # If no connection
-    if not count:
+    if count == 0:
         # We create the row in sql and we return True
-        create_count()
-        return True
+        success = create_count()
+        return True, success
 
     # If less than 50 connections
-    elif count < 50:
+    elif count < int(current_app.config['COUNT']['count_total_per_day']):
         # We update the count and we return True
-        update_count()
-        return True
+        success = update_count()
+        return True, success
 
     # More than 50 connections
-    else:
+    elif count >= int(current_app.config['COUNT']['count_total_per_day']):
         # We return False
-        return False
+        return False, True
+
+    else:
+        return None, False
 
 
 def update_count():
@@ -47,8 +53,10 @@ def update_count():
     We update the count of connection for today with a +1
     :return:
     """
-    sql_request = f"UPDATE {TABLE_COUNT} SET total = total + 1 WHERE date = CURRENT_DATE RETURNING *;"
-    count = fetchall_db(sql_request, req_type="UPDATE")
+    sql_request = f"UPDATE {current_app.config['COUNT']['table_name']} " \
+                  f"SET count = count + 1 WHERE date = CURRENT_DATE RETURNING *;"
+    count, success = fetchall_db(sql_request)
+    return success
 
 
 def create_count():
@@ -56,8 +64,14 @@ def create_count():
         We create the first connection of the day
         :return:
         """
-    sql_request = f"INSERT INTO {TABLE_COUNT} DEFAULT VALUES returning id;"
-    count = fetchall_db(sql_request, req_type="INSERT")
+    sql_request = f"INSERT INTO {current_app.config['COUNT']['table_name']} DEFAULT VALUES returning id;"
+    count, success = fetchall_db(sql_request)
+    return success
 
 
-
+def too_many_count():
+    """
+    Function to return the issue from our API when we have too many count from today
+    """
+    return jsonify({"error" :f"Too many connections for today, limited to " \
+           f"{current_app.config['COUNT']['count_total_per_day']} per day"}), 401

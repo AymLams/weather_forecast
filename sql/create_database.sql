@@ -1,5 +1,5 @@
 -- DATABASE Creation
-CREATE DATABASE weather_forecast;
+CREATE DATABASE weather;
 
 -- TABLE in order to deal with the count of API consulted per day
 DROP TABLE count_per_day;

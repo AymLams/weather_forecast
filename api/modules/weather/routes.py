@@ -1,14 +1,21 @@
-from api.modules.weather import bp
-from current_weather import current_weather
-from forecast_weather import forecast_weather
+from .weather import get_forecast_weather, get_current_weather
+from flask import Blueprint
+from flask import request
 
-@bp.route("/current", methods=["GET"])
-def get_current_weather():
-    #return "Hello World"
-    return current_weather()
+# We set our specific blueprint in order to have a well organised API
+bp_weather = Blueprint('weather', __name__, url_prefix="/weather")
 
 
-@bp.route("/forecast", methods=["GET"])
-def get_forecast_weather():
-    return "Hello World"
-    #return forecast_weather()
+# We set the Path /weather/current
+@bp_weather.route("/current", methods=["GET"])
+def current_weather():
+    # We get back the location parameter from the URL
+    location = request.args.get("location", default="")
+    return get_current_weather(location)
+
+
+@bp_weather.route("/forecast", methods=["GET"])
+def forecast_weather():
+    # We get back the location parameter from the URL
+    location = request.args.get("location", default="")
+    return get_forecast_weather(location)
