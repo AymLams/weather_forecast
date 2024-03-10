@@ -1,8 +1,19 @@
+#!/usr/bin/env python3  Line 1
+# -*- coding: utf-8 -*- Line 2
+# ----------------------------------------------------------------------------
+# Created By  : Aymeric Lamaallem
+# version ='1.0'
+# ---------------------------------------------------------------------------
+""" Module to test the forecast weather API """
+# ---------------------------------------------------------------------------
 from api import create_app
 import json
 
 
 def test_missing_location():
+    """
+    Function to test the behavior of our Forecast Weather API when it's missing the location parameter
+    """
     app = create_app()
     client = app.test_client()
 
@@ -12,6 +23,9 @@ def test_missing_location():
 
 
 def test_current():
+    """
+    FUnction to check the output of our Forecast Weather output
+    """
     app = create_app()
     client = app.test_client()
 
