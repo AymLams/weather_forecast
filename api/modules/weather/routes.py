@@ -1,3 +1,13 @@
+#!/usr/bin/env python3  Line 1
+# -*- coding: utf-8 -*- Line 2
+# ----------------------------------------------------------------------------
+# Created By  : Aymeric Lamaallem
+# version ='1.0'
+# ---------------------------------------------------------------------------
+""" Route file to set all our different API:
+    * /weather/current
+    * /weather/forecast """
+# ---------------------------------------------------------------------------
 from .weather import get_forecast_weather, get_current_weather
 from flask import Blueprint
 from flask import request

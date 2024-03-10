@@ -1,3 +1,11 @@
+#!/usr/bin/env python3  Line 1
+# -*- coding: utf-8 -*- Line 2
+# ----------------------------------------------------------------------------
+# Created By  : Aymeric Lamaallem
+# version ='1.0'
+# ---------------------------------------------------------------------------
+""" Module to create some jobs to our configuration """
+# ---------------------------------------------------------------------------
 import os
 import configparser
 import logging

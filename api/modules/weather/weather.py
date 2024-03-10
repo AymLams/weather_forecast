@@ -1,3 +1,12 @@
+#!/usr/bin/env python3  Line 1
+# -*- coding: utf-8 -*- Line 2
+# ----------------------------------------------------------------------------
+# Created By  : Aymeric Lamaallem
+# version ='1.0'
+# ---------------------------------------------------------------------------
+""" Module where we have our main function to get the current weather
+    and get the forecast for the 7 next days """
+# ---------------------------------------------------------------------------
 from utils.count import too_many_count, check_count_per_day
 from utils.compute_weather import *
 import requests
@@ -9,26 +18,32 @@ def get_forecast_weather(location: str):
     """
     Function to return the forecast of the weather depending on the location
     """
-
+    # We check if we have the location variable in the params
     if location:
+        # We contact the API for the forecast of the weather for the 7 next days
         params = {
             "city": location,
             "days": "7",
             **current_app.config["API_WEATHER_PARAMS"]
         }
         result = requests.get(current_app.config["API_WEATHER"]["forecast_url"], params)
-
+        # We check that the status code is equal to 200
         if result.status_code == 200:
+            # We get back the count of connection per day
             count, success = check_count_per_day()
+            # We check that we do not have any error with the check count
             if success:
+                # We check that we didn't go more than the number of connection necessary per day
                 if count:
                     return get_forecast_weather_data(json.loads(result.content)["data"])
                 else:
                     return too_many_count()
             else:
                 return jsonify({"error": "Error with the database"}), 501
+        # When the API Weather is not working
         else:
-            return result.message, result.status_code
+            return jsonify({"error": str(result.text)}), result.status_code
+    # Missing the location parameter
     else:
         return jsonify({"error": "Missing parameter 'location'."}), 401
 
@@ -38,24 +53,31 @@ def get_current_weather(location: str):
     Function qui retourne la météo actuelle
     :return:
     """
+    # We check if we have the location variable in the params
     if location:
+        # We contact the API for the forecast
         params = {
             "city": location,
             **current_app.config["API_WEATHER_PARAMS"]
         }
         result = requests.get(current_app.config["API_WEATHER"]["current_url"], params)
-
+        # We check that the status code is equal to 200
         if result.status_code == 200:
+            # We get back the count of connection per day
             count, success = check_count_per_day()
+            # We check that we didn't go more than the number of connection necessary per day
             if success:
+                # We check that we didn't go more than the number of connection necessary per day
                 if count:
                     return get_current_weather_data(json.loads(result.content)["data"][0])
                 else:
                     return too_many_count()
             else:
                 return jsonify({"error": "Error with the database"}), 501
+        # When the API Weather is not working
         else:
             return jsonify({"error": str(result.text)}), result.status_code
+    # Missing the location parameter
     else:
         return jsonify(json.dumps({"error": "Missing parameter 'location'."})), 401
 
@@ -90,6 +112,7 @@ def get_forecast_weather_data(data):
         pop.append(content["pop"])
         wind_speed.append(content["wind_spd"])
 
+    # We return the output using the functions of the compute weather file
     output = {
         "general_evolution": compute_general_evolution(temp, pres, pop),
         "tendance_temp": compute_tendance(temp),
