@@ -14,7 +14,7 @@ De même cette application utilise une base de données <b>PostgreSQL</b> il est
 
 # Installation de l'environnement
 Veuillez suivre ces différentes étapes afin de mettre en place l'environnement. <br>
-Placez-vous dans le dossier où vous avez récupérer le code présent dans ce repot.<br>
+Placez-vous dans le dossier où vous avez récupéré le code présent dans ce repot.<br>
 <i><u>Environnement développé et testé sous MacOS</i></u>
 * <b> python3 -m venv venv </b> (<i>Vous installez l'environnement virtuel)</i>
 * <b> source venv/bin/activate </b> (<i>Vous activez l'environnement créé précédemment</i>)
@@ -24,6 +24,6 @@ Placez-vous dans le dossier où vous avez récupérer le code présent dans ce r
 * <b> flask --app api/app.py run </b> (<i>Lancement de votre API</i>)
 
 # Testing
-Afin d'effectuer les tests de votre API, effectuez les commandes suivantes:
+Afin d'effectuer les tests de votre API, effectuez les commandes suivantes en étant dans le dossier <i><u>weather_forecast</u></i>:
 * <b>source venvTest/bin/activate</b>
 * <b>pytest --pyargs api</b>
